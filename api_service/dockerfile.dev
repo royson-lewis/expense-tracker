@@ -1,0 +1,7 @@
+FROM golang:1.21.1
+
+WORKDIR /service
+
+COPY . /service
+
+CMD ["tail", "-f", "/dev/null"]
