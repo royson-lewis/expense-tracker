@@ -14,16 +14,16 @@ var DB *gorm.DB
 
 func InitDB() {
 	var err error
-	dsn := "admin:Paniyoor0111@tcp(rl-portfolio-prod.c2zyjnkyryxg.ap-south-1.rds.amazonaws.com:3306)/et"
+	dsn := "root:rl01111998@tcp(mysql:3306)/database?parseTime=true"
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-        log.Fatal(err)
-    }
+		log.Fatal(err)
+	}
 
 	DB.AutoMigrate(
-		&et_models.ETTransactions{},
-		&et_models.ETTransactionCategories{},
 		&et_models.ETAccounts{},
+		&et_models.ETTransactionCategories{},
+		&et_models.ETTransactions{},
 	)
 
 	// Check if the database connection is successful
