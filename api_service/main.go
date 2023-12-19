@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-sql-driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type AccountWithCalcBal struct {
@@ -29,7 +30,7 @@ func setupRouter() *gin.Engine {
 
 	r.GET("/transactions", func(c *gin.Context) {
 		var transactions []et_models.ETTransactions
-		if err := DB.Find(&transactions).Error; err != nil {
+		if err := DB.Preload(clause.Associations).Find(&transactions).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -114,7 +115,7 @@ func setupRouter() *gin.Engine {
 
 	r.GET("/accounts", func(c *gin.Context) {
 		var accounts []et_models.ETAccounts
-		if err := DB.Preload("ETTransactionCategories").Find(&accounts).Error; err != nil {
+		if err := DB.Preload("Transactions.TransactionCategory").Preload("Transactions.Account").Find(&accounts).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}

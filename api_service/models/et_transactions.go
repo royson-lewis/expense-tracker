@@ -8,7 +8,9 @@ type ETTransactions struct {
 	Amount                    float64
 	ExpenseType               string
 	IsPaid                    uint8
+	TransactionCategory       ETTransactionCategories `gorm:"ForeignKey:ETTransactionCategoriesID"`
 	ETTransactionCategoriesID uint
+	Account                   ETAccounts `gorm:"ForeignKey:ETAccountsID"`
 	ETAccountsID              uint
 }
 
